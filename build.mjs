@@ -1,0 +1,12 @@
+import fs from 'node:fs/promises';
+import ts from 'typescript';
+let game=await fs.readFile('src/game.ts','utf8');
+let app=await fs.readFile('src/app.ts','utf8');
+game=game.replaceAll('export ','');app=app.replace(/^import[^\n]+\n/,'');
+const result=ts.transpileModule(game+'\n'+app,{compilerOptions:{target:ts.ScriptTarget.ES2020,module:ts.ModuleKind.None,strict:true}});
+const art=await fs.readFile('assets/ogre-bridge-keeper.png');
+const css=await fs.readFile('src/style.css','utf8');
+const template=await fs.readFile('src/template.html','utf8');
+const html=template.replace('__CSS__',css).replace('__ART__','data:image/png;base64,'+art.toString('base64')).replace('__JS__','(()=>{'+result.outputText.replaceAll('</script','<\\/script')+'})();');
+await fs.mkdir('dist',{recursive:true});await fs.writeFile('dist/index.html',html);
+console.log('HTML autonome compilé avec illustration intégrée.');

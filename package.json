@@ -1,0 +1,1 @@
+{"name":"le-garde-du-pont","version":"1.0.0","private":true,"type":"module","scripts":{"build":"node build.mjs","check":"tsc --noEmit --strict --skipLibCheck --target es2020 --module esnext --moduleResolution bundler --lib dom,es2020 src/app.ts src/game.ts","test":"node tests.mjs"},"devDependencies":{"typescript":"5.9.3"}}
